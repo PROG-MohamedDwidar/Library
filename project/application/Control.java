@@ -2,14 +2,20 @@ package application;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class Control {
 	@FXML
@@ -22,10 +28,18 @@ public class Control {
 	Label out;
 	@FXML
 	ImageView angryface;
-	public void login(ActionEvent e) {
+	
+	
+	public void login(ActionEvent e) throws Exception {
+		
 		String serverresponse=emps.checkpass(id.getText(), pass.getText());
 		if(serverresponse.equals("1")) {
-			System.out.println("success");
+			Parent root = FXMLLoader.load(getClass().getResource("AdminPage.fxml"));
+			Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			Scene scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+			
 		}
 		else if(serverresponse.equals("2")) {
 			

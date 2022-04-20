@@ -6,30 +6,41 @@ import java.sql.SQLException;
 import java.sql.Statement;
 public abstract class emps {
 	static String checkpass(String name,String p) {
-		String url="jdbc:mysql://127.0.0.1:3306/project";
-		String n="root";
+		String url="jdbc:mysql://projectlibprog.mysql.database.azure.com:3306/proj";
+		String n="project@projectlibprog",pass="rootrt*1";
 		String q="select epass,ejobid from emps where eid="+name;
-		Connection c;
+		Connection c = null;
+		String response;
 		try {
-			c = DriverManager.getConnection(url,n,n);
+			c = DriverManager.getConnection(url,n,pass);
+			
 			Statement st=c.createStatement();
 			ResultSet ans=st.executeQuery(q);
 			if(ans.next()) {
 				if(ans.getString(1).equals(p)) {
-					return ans.getString(2);
+					response = ans.getString(2);
+					c.close();
+					return response;
 				}
 				else {
 					//System.out.println(ans.getString(1));
+					c.close();
 					return "password wrong";
 				}
 			}
 			else {
+				c.close();
 				return "wrong id";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		try {
+			if(c!=null)c.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "unknown error check terminal";
 	}
 }
