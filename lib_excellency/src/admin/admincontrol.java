@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class admincontrol implements Initializable  {
+	@FXML
+	TextField searchable;
 	//Book Table
 	//----------------------------------
 	@FXML
@@ -75,11 +77,7 @@ public class admincontrol implements Initializable  {
 	
 	//Refresh Employee
 	public void refresh(ActionEvent e) {
-		id.setCellValueFactory(new PropertyValueFactory<>("id"));
-		name.setCellValueFactory(new PropertyValueFactory<>("name"));
-		job.setCellValueFactory(new PropertyValueFactory<>("job"));
-		email.setCellValueFactory(new PropertyValueFactory<>("email"));
-		phone.setCellValueFactory(new PropertyValueFactory<>("pnum"));
+
 		try {
 			tabl.setItems(db_user_connect.getAll());
 		} catch (SQLException e1) {
@@ -92,16 +90,15 @@ public class admincontrol implements Initializable  {
 	@Override
 	public void initialize(URL url,ResourceBundle resourceBundle) {
 		//setting the employee
+		id.setCellValueFactory(new PropertyValueFactory<>("id"));
+		name.setCellValueFactory(new PropertyValueFactory<>("name"));
+		job.setCellValueFactory(new PropertyValueFactory<>("job"));
+		email.setCellValueFactory(new PropertyValueFactory<>("email"));
+		phone.setCellValueFactory(new PropertyValueFactory<>("pnum"));
 		//---------------------------------------------
 		refresh(new ActionEvent());
 		//-----------------------------------------------
 		//setting the books table columns
-		//-----------------------------------------------
-		refbook();
-		
-		
-	}
-	public void refbook() {
 		isbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
 		nam.setCellValueFactory(new PropertyValueFactory<>("nam"));
 		cat.setCellValueFactory(new PropertyValueFactory<>("cat"));
@@ -109,6 +106,12 @@ public class admincontrol implements Initializable  {
 		qt.setCellValueFactory(new PropertyValueFactory<>("totq"));
 		out.setCellValueFactory(new PropertyValueFactory<>("tak"));
 		edi.setCellValueFactory(new PropertyValueFactory<>("bb"));
+		//-----------------------------------------------
+		refbook();
+		
+		
+	}
+	public void refbook() {
 		try {
 			tb.setItems(db_book_connect.getAll());
 		} catch (SQLException e1) {
@@ -116,8 +119,8 @@ public class admincontrol implements Initializable  {
 			e1.printStackTrace();
 		}
 	}
-	public void seabook(String key){
-		
+	public void seabook(ActionEvent e) throws SQLException {
+		tb.setItems(db_book_connect.search(searchable.getText()));
 	}
 	
 	

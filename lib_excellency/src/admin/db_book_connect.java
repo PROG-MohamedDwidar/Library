@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 public abstract class db_book_connect {
 	static String url="jdbc:mysql://projectlibprog.mysql.database.azure.com:3306/proj";
@@ -31,15 +32,16 @@ public abstract class db_book_connect {
 		Connection c=DriverManager.getConnection(url,n,pass);
 		Statement ss=c.createStatement();
 		ResultSet ans= ss.executeQuery("SELECT * FROM books");
-		ObservableList<book>oo=FXCollections.observableArrayList();
-		while(ans.next()){
+		ObservableList<book>oo=fillt(ans);
+				//FXCollections.observableArrayList();
+		/*while(ans.next()){
 			oo.add(new book(ans.getString(1),
 							ans.getString(2),
 							ans.getString(3),
 							ans.getString(4),
 							ans.getString(5),
 							ans.getString(6)));
-		}
+		}*/
 
 
 		c.close();
@@ -56,6 +58,49 @@ public abstract class db_book_connect {
 				+ "`TotQT`)\r\n"
 				+ "VALUES\r\n"
 				+ "("+isbn+",'"+nm+"','"+categ+"','"+auth+"',"+qt+");");
+		ResultSet isadd=ss.executeQuery("select * from books where isbn="+isbn);
+		Alert alert;
+		if(isadd.next()){
+			alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setHeaderText(null);
+			alert.setContentText("Saved");
+		}
+		else{
+			alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("Error Occured");
+		}
+		alert.showAndWait();
 		c.close();
 	}
-}
+	public static ObservableList<book> search(String key) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet ans=ss.executeQuery("select * from books where (Bname like '%"+key+"%') or (Category like '%"+key+"%') or (Author like'%"+key+"%')");
+		ObservableList<book>oo=fillt(ans);
+		return oo;
+	}
+	public static book getBook(String isbn) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet ans=ss.executeQuery("select * from books where isbn ="+isbn);
+		ans.next();
+		book ret=new book(ans.getString(1),ans.getString(2),ans.getString(3),ans.getString(4),ans.getString(5),ans.getString(6));
+		return ret;
+	}
+	public static void upbook(String isb,String quant) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ss.execute("UPDATE `proj`.`books` " + "SET" + " `TotQT` = "+quant+ " WHERE `ISBN` = "+isb+";");
+		c.close();
+	}
+	public static void delete(String isb) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		//ss.execute("UPDATE `proj`.`books` " + "SET" + " `TotQT` = "+quant+ " WHERE `ISBN` = "+isb+";");
+		c.close();
+	}
+}//(ISBN ="+key+") or
+
+
+

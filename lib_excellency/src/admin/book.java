@@ -29,7 +29,9 @@ public class book {
 				FXMLLoader loader=new FXMLLoader(getClass().getResource("edito_UI.fxml"));
 				Parent root=loader.load();
 				editBcontrol editc=loader.getController();
-				editc.isbnsearch=isbn;
+
+				editc.initialize(isbn);
+				//System.out.println("---------11"+editc.isbnsearch);
 				Scene ss=new Scene(root);
 				edito.setScene(ss);
 				edito.show();

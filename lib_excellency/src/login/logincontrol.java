@@ -66,3 +66,25 @@ public class logincontrol {
 		
 	}
 }
+	/*Statement st = null;
+	String query ="select * from emps";
+	Alert alert;
+	ResultSet set = st.executeQuery(query);
+
+        if(){
+				while(set.next()){
+				String name = set.getString("ename");
+				System.out.println(name);
+				}
+				alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setHeaderText(null);
+				alert.setContentText("Saved");
+				}
+				else {
+				alert = new Alert(Alert.AlertType.ERROR);
+				alert.setHeaderText(null);
+				alert.setContentText("Error Occured");
+
+				}
+				alert.showAndWait();
+				}*/
