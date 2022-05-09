@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -12,15 +13,16 @@ import java.io.IOException;
 public class book {
 	private String isbn="N/A",totq="N/A",tak="N/A";
 	private String nam="N/A",cat="N/A",auth="N/A";
-
+	private Image cov;
 	private Button bb;
-	book(String isbn,String nam,String cat,String auth,String totq,String tak){
+	book(String isbn,String nam,String cat,String auth,String totq,String tak,Image cov){
 		this.isbn=isbn;
 		this.nam=nam;
 		this.cat=cat;
 		this.auth=auth;
 		this.totq=totq;
 		this.tak=tak;
+		this.cov=cov;
 		bb=new Button("edit");
 		bb.setOnAction((event)->{
 			Stage edito=new Stage();
@@ -47,4 +49,5 @@ public class book {
 	public String getTotq(){return totq;}
 	public String getTak(){return tak;}
 	public Button getBb() {return bb;}
+	public Image getCov() {return cov;}
 }

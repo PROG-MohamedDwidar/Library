@@ -1,28 +1,42 @@
 package admin;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.sql.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 
 public abstract class db_book_connect {
 	static String url="jdbc:mysql://projectlibprog.mysql.database.azure.com:3306/proj";
 	static String n="project@projectlibprog",pass="rootrt*1";
-	
+	static private Image defim(byte[]imam){
+		Image im;
+		if(imam!=null){
+			im=new Image(new ByteArrayInputStream(imam));
+		}
+		else{
+			im=new Image("https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg");
+		}
+		return im;
+	}
 	static public ObservableList<book>fillt(ResultSet insert){
 		ObservableList<book>oo=FXCollections.observableArrayList();
 		try {
 			while(insert.next()) {
 				//System.out.println(insert.getString(1));
-				oo.add(new book(insert.getString(1),insert.getString(2),insert.getString(3),insert.getString(4),insert.getString(5),insert.getString(6)));
+				oo.add(new book(insert.getString(1),insert.getString(2),insert.getString(3),insert.getString(4),insert.getString(5),insert.getString(6),defim(insert.getBytes(7))));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			    //TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -85,13 +99,20 @@ public abstract class db_book_connect {
 		Statement ss=c.createStatement();
 		ResultSet ans=ss.executeQuery("select * from books where isbn ="+isbn);
 		ans.next();
-		book ret=new book(ans.getString(1),ans.getString(2),ans.getString(3),ans.getString(4),ans.getString(5),ans.getString(6));
+		Image im=defim(ans.getBytes(7));
+		book ret=new book(ans.getString(1),ans.getString(2),ans.getString(3),ans.getString(4),ans.getString(5),ans.getString(6),im);
 		return ret;
 	}
-	public static void upbook(String isb,String quant) throws SQLException {
+	public static void upbook(String isb, String quant, Image im) throws SQLException, IOException {
+		File fileim=new File("imbuf");
+		ImageIO.write(SwingFXUtils.fromFXImage(im,null),"png",fileim);
+		FileInputStream fin=new FileInputStream(fileim);
 		Connection c=DriverManager.getConnection(url,n,pass);
-		Statement ss=c.createStatement();
-		ss.execute("UPDATE `proj`.`books` " + "SET" + " `TotQT` = "+quant+ " WHERE `ISBN` = "+isb+";");
+		PreparedStatement ss=c.prepareStatement("UPDATE `proj`.`books` SET `TotQT` = ? , cover = ? WHERE `ISBN` = ? ;");
+		ss.setNString(1,quant);
+		ss.setBinaryStream(2,fin,(int)fileim.length());
+		ss.setNString(3,isb);
+		ss.executeUpdate();
 		c.close();
 	}
 	public static void delete(String isb) throws SQLException {
