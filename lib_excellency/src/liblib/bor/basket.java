@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class basket {
     Vector<book> v;
-    basket(){
+    public basket(){
         v=new Vector<>();
     }
     public void inbas(book b){

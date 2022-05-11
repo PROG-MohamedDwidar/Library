@@ -2,6 +2,8 @@ package liblib;
 
 import admin.book;
 import admin.db_book_connect;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import liblib.add_reader.addred_control;
+import liblib.bor.basket;
 
 
 import java.io.IOException;
@@ -20,7 +23,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class libmain_control implements Initializable {
-
+    public ObservableList<book>bbs;
+    public ObservableList<book>search_res;
     //-----------------------------------------------------------
     //readers hub
     @FXML
@@ -28,6 +32,15 @@ public class libmain_control implements Initializable {
     public void regred() throws IOException {
         String rednum=renum.getText();
         if(DB_liblib_connect.IsRegRed(rednum,0)){
+            sercher.setDisable(false);
+            bbs= FXCollections.observableArrayList();
+            search_res=FXCollections.observableArrayList();
+            bbs.removeAll();
+            search_res.removeAll();
+            basket_tabl.setItems(bbs);
+            bees.setItems(search_res);
+
+
 
         }
         else{
@@ -48,6 +61,20 @@ public class libmain_control implements Initializable {
 
     //-----------------------------------------------------------
     //borrow hub
+    @FXML
+    TableView<book>basket_tabl;
+    @FXML
+    TableColumn<book,String>bas_name;
+    @FXML
+    TableColumn<book,String>bas_auth;
+    @FXML
+    TableColumn<book,Button>bas_rem;
+
+    public void basket_refresh(){
+        basket_tabl.setItems(bbs);
+    }
+    @FXML
+    public Button sercher;
     @FXML
     public Button addbas;
     @FXML
@@ -77,8 +104,10 @@ public class libmain_control implements Initializable {
         bnam.setCellValueFactory(new PropertyValueFactory<>("nam"));
         bbv.setCellValueFactory(new PropertyValueFactory<>("bbv"));
         bba.setCellValueFactory(new PropertyValueFactory<>("bba"));
+
         try {
-            bees.setItems(db_book_connect.search(sebox.getText(),is,na,ca,au,vco,this));
+            search_res=db_book_connect.search(sebox.getText(),is,na,ca,au,vco,this);
+            bees.setItems(search_res);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -93,5 +122,9 @@ public class libmain_control implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addbas.setDisable(true);
+        sercher.setDisable(true);
+        bas_name.setCellValueFactory(new PropertyValueFactory<>("nam"));
+        bas_auth.setCellValueFactory(new PropertyValueFactory<>("auth"));
+        bas_rem.setCellValueFactory(new PropertyValueFactory<>("but_rem"));
     }
 }

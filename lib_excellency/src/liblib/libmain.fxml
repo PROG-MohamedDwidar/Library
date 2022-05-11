@@ -22,21 +22,23 @@
           <TableColumn fx:id="bis" prefWidth="125.60000896453857" text="ISBN" />
           <TableColumn fx:id="bnam" prefWidth="191.19996643066406" text="Name" />
             <TableColumn fx:id="bbv" text="View" />
-            <TableColumn fx:id="bba" prefWidth="80.80002441406248" text="Add" />
+            <TableColumn fx:id="bba" prefWidth="80.00003662109373" text="Add" />
         </columns>
       </TableView>
       <TableView layoutX="497.0" layoutY="296.0" prefHeight="385.0" prefWidth="310.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn prefWidth="132.0" text="Name" />
+          <TableColumn prefWidth="109.5999755859375" text="Author" />
+            <TableColumn prefWidth="68.800048828125" text="return" />
         </columns>
       </TableView>
       <TextField fx:id="sebox" layoutX="14.0" layoutY="234.0" prefHeight="26.0" prefWidth="257.0" />
-      <Button layoutX="277.0" layoutY="234.0" mnemonicParsing="false" onAction="#seda" prefHeight="26.0" prefWidth="89.0" text="search" />
-      <TableView layoutX="497.0" layoutY="25.0" prefHeight="173.0" prefWidth="310.0">
+      <Button fx:id="sercher" layoutX="277.0" layoutY="234.0" mnemonicParsing="false" onAction="#seda" prefHeight="26.0" prefWidth="89.0" text="search" />
+      <TableView fx:id="basket_tabl" layoutX="497.0" layoutY="25.0" prefHeight="173.0" prefWidth="310.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn fx:id="bas_name" prefWidth="154.4000244140625" text="Name" />
+          <TableColumn fx:id="bas_auth" minWidth="8.79998779296875" prefWidth="95.99993896484375" text="Author" />
+            <TableColumn fx:id="bas_rem" prefWidth="58.40006103515623" text="remove" />
         </columns>
       </TableView>
       <Button layoutX="718.0" layoutY="206.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="89.0" text="check out" />

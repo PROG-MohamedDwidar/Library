@@ -16,10 +16,11 @@ import liblib.libmain_control;
 import java.io.IOException;
 
 public class book {
+	private int flag=0;
 	private String isbn="N/A",totq="N/A",tak="N/A";
 	private String nam="N/A",cat="N/A",auth="N/A";
 	private Image cov;
-	private Button bb,bba,bbv;
+	private Button bb,bba,bbv,but_rem;
 
 	private TextField i,n,c,a;
 	private ImageView co;
@@ -82,8 +83,17 @@ public class book {
 		this.a=a;
 		this.co=v;
 		this.controller=controller;
+		controller.addbas.setOnAction(e->{
+			controller.bbs.add(this);
+			controller.basket_refresh();
+		});
 		//---------------------------------------------------
-		//admin button to update books
+		but_rem=new Button("remove");
+		but_rem.setOnAction(e->{
+			flag=0;
+			controller.bbs.remove(this);
+			controller.basket_refresh();
+		});
 
 		//----------------------------------------------------
 		//librarian buttons
@@ -97,19 +107,34 @@ public class book {
 			v.setImage(cov);
 			controller.addbas.setDisable(false);
 			controller.addbas.setOnAction(e->{
-				Alert ar=new Alert(Alert.AlertType.CONFIRMATION);
-				ar.setContentText("clicker");
-				ar.showAndWait();
+				if(flag!=1) {
+					controller.bbs.add(this);
+					controller.basket_refresh();
+					flag=1;
+				}
+				else{
+					Alert alert=new Alert(Alert.AlertType.ERROR);
+					alert.setContentText("book already in basket");
+					alert.showAndWait();
+				}
 
 			});
 		});
 		bba=new Button();
 		bba.setText("add");
 		bba.setOnAction(e->{
-			Alert aa=new Alert(Alert.AlertType.CONFIRMATION);
-			aa.setContentText("clicked");
-			aa.showAndWait();
+			if(flag!=1) {
+				flag=1;
+				controller.bbs.add(this);
+				controller.basket_refresh();
+			}
+			else{
+				Alert alert=new Alert(Alert.AlertType.ERROR);
+				alert.setContentText("book already in basket");
+				alert.showAndWait();
+			}
 		});
+
 		//----------------------------------------------------
 	}
 	public String getIsbn(){return isbn;}
@@ -122,4 +147,5 @@ public class book {
 	public Image getCov() {return cov;}
 	public Button getBba() {return bba;}
 	public Button getBbv() {return bbv;}
+	public Button getBut_rem() {return but_rem;}
 }
