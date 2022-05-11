@@ -42,7 +42,12 @@ public class logincontrol {
 			
 		}
 		else if(serverresponse.equals("2")) {
-			
+			Parent root = FXMLLoader.load(getClass().getResource("/liblib/libmain.fxml"));
+			Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+			Scene scene=new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+
 		}
 		else {
 			System.out.println(serverresponse);

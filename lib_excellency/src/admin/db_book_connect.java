@@ -8,8 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import liblib.libmain_control;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -28,12 +31,27 @@ public abstract class db_book_connect {
 		}
 		return im;
 	}
+
 	static public ObservableList<book>fillt(ResultSet insert){
 		ObservableList<book>oo=FXCollections.observableArrayList();
 		try {
 			while(insert.next()) {
 				//System.out.println(insert.getString(1));
 				oo.add(new book(insert.getString(1),insert.getString(2),insert.getString(3),insert.getString(4),insert.getString(5),insert.getString(6),defim(insert.getBytes(7))));
+			}
+		} catch (SQLException e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return oo;
+	}
+	static public ObservableList<book>fillt(ResultSet insert, TextField i, TextField n, TextField c, TextField a, ImageView v, libmain_control controller){
+		ObservableList<book>oo=FXCollections.observableArrayList();
+		try {
+			while(insert.next()) {
+				//System.out.println(insert.getString(1));
+				oo.add(new book(insert.getString(1),insert.getString(2),insert.getString(3),insert.getString(4),insert.getString(5),insert.getString(6),defim(insert.getBytes(7)),i,n,c,a,v,controller));
 			}
 		} catch (SQLException e) {
 			    //TODO Auto-generated catch block
@@ -87,11 +105,20 @@ public abstract class db_book_connect {
 		alert.showAndWait();
 		c.close();
 	}
+	public static ObservableList<book> search(String key, TextField i, TextField na, TextField ca, TextField a,ImageView v,libmain_control controller) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet ans=ss.executeQuery("select * from books where (Bname like '%"+key+"%') or (Category like '%"+key+"%') or (Author like'%"+key+"%')");
+		ObservableList<book>oo=fillt(ans,i,na,ca,a,v,controller);
+		c.close();
+		return oo;
+	}
 	public static ObservableList<book> search(String key) throws SQLException {
 		Connection c=DriverManager.getConnection(url,n,pass);
 		Statement ss=c.createStatement();
 		ResultSet ans=ss.executeQuery("select * from books where (Bname like '%"+key+"%') or (Category like '%"+key+"%') or (Author like'%"+key+"%')");
 		ObservableList<book>oo=fillt(ans);
+		c.close();
 		return oo;
 	}
 	public static book getBook(String isbn) throws SQLException {
