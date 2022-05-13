@@ -13,8 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import liblib.QR.qr_handel;
 import liblib.add_reader.addred_control;
-import liblib.bor.basket;
 
 
 import java.io.IOException;
@@ -61,6 +61,57 @@ public class libmain_control implements Initializable {
 
     //-----------------------------------------------------------
     //borrow hub
+    public Button activate_qr,deactiv_qr;
+    Thread qr_thread;
+    qr_handel cam;
+    public void act_qr()
+    {
+        cam=new qr_handel(this);
+        qr_thread = new Thread(cam);
+        qr_thread.start();
+        deactiv_qr.setDisable(false);
+        activate_qr.setDisable(true);
+
+    }
+    public void kill_cam(){
+        cam.flag=0;
+        activate_qr.setDisable(false);
+        deactiv_qr.setDisable(true);
+    }
+    public void add_qr_read(String isbn){
+        try {
+            if(!db_book_connect.isAvailable(isbn)) {
+                Alert alert=new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("out of stock");
+                alert.showAndWait();
+                return;
+            }
+        } catch (SQLException e) {
+            Alert alert=new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("check connection");
+            alert.showAndWait();
+        }
+        int flag=0;
+        try {
+            for(book travers:bbs){
+                if(travers.getIsbn().equals(isbn))flag=1;
+            }
+            if(flag!=1) {
+                bbs.add(db_book_connect.getBook(isbn, this));
+                basket_tabl.setItems(bbs);
+            }
+            else{
+                Alert alert=new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("book already in basket");
+                alert.showAndWait();
+            }
+        } catch (SQLException e) {
+            Alert alert=new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("check connection");
+            alert.showAndWait();
+        }
+    }
+
     @FXML
     TableView<book>basket_tabl;
     @FXML
@@ -121,6 +172,7 @@ public class libmain_control implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        deactiv_qr.setDisable(true);
         addbas.setDisable(true);
         sercher.setDisable(true);
         bas_name.setCellValueFactory(new PropertyValueFactory<>("nam"));

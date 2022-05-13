@@ -31,7 +31,6 @@ public abstract class db_book_connect {
 		}
 		return im;
 	}
-
 	static public ObservableList<book>fillt(ResultSet insert){
 		ObservableList<book>oo=FXCollections.observableArrayList();
 		try {
@@ -130,6 +129,15 @@ public abstract class db_book_connect {
 		book ret=new book(ans.getString(1),ans.getString(2),ans.getString(3),ans.getString(4),ans.getString(5),ans.getString(6),im);
 		return ret;
 	}
+	public static book getBook(String isbn,libmain_control controller) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet ans=ss.executeQuery("select * from books where isbn ="+isbn);
+		ans.next();
+		Image im=defim(ans.getBytes(7));
+		book ret=new book(ans.getString(1),ans.getString(2),ans.getString(3),ans.getString(4),ans.getString(5),ans.getString(6),im,controller);
+		return ret;
+	}
 	public static void upbook(String isb, String quant, Image im) throws SQLException, IOException {
 		File fileim=new File("imbuf");
 		ImageIO.write(SwingFXUtils.fromFXImage(im,null),"png",fileim);
@@ -148,7 +156,17 @@ public abstract class db_book_connect {
 		//ss.execute("UPDATE `proj`.`books` " + "SET" + " `TotQT` = "+quant+ " WHERE `ISBN` = "+isb+";");
 		c.close();
 	}
-}//(ISBN ="+key+") or
+	public static boolean isAvailable(String isbn) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet ans=ss.executeQuery("select TotQT,taken from books where isbn ="+isbn);
+		ans.next();
+		int av=ans.getInt(1)-ans.getInt(2);
+		c.close();
+		if(av>0)return true;
+		return false;
+	}
+}
 
 
 
