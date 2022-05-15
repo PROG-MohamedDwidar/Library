@@ -1,9 +1,9 @@
 # :(
- _____________
-   |      |
-   .  /\  .
-   ________
-  /         \
+ #_____________
+ #  |      |
+ #  .  /\  .
+ #  ________
+ # /         \
    
  
 # Try out the whole new fully functional qr code reader and please play with the code and you will come out with great new ideas
