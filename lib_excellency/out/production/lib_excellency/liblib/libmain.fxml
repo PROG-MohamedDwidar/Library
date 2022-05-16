@@ -41,7 +41,7 @@
             <TableColumn fx:id="bas_rem" prefWidth="58.40006103515623" text="remove" />
         </columns>
       </TableView>
-      <Button layoutX="718.0" layoutY="206.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="89.0" text="check out" />
+      <Button layoutX="718.0" layoutY="206.0" mnemonicParsing="false" onAction="#check_out" prefHeight="26.0" prefWidth="89.0" text="check out" />
       <Button fx:id="activate_qr" layoutX="497.0" layoutY="206.0" mnemonicParsing="false" onAction="#act_qr" prefHeight="26.0" prefWidth="89.0" text="Activate QR" />
       <Button fx:id="deactiv_qr" layoutX="590.0" layoutY="206.0" mnemonicParsing="false" onAction="#kill_cam" prefHeight="26.0" prefWidth="125.0" text="Deactivate QR" />
       <Button layoutX="498.0" layoutY="235.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="310.0" style="-fx-background-color: FF6666;" text="Log out" />

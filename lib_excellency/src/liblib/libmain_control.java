@@ -15,8 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import liblib.QR.qr_handel;
 import liblib.add_reader.addred_control;
-
-
+import liblib.borr.borrow_control;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,6 +24,12 @@ import java.util.ResourceBundle;
 public class libmain_control implements Initializable {
     public ObservableList<book>bbs;
     public ObservableList<book>search_res;
+    public String empid;
+    public void setEmpid(String empid){
+        this.empid=empid;
+    }
+
+
     //-----------------------------------------------------------
     //readers hub
     @FXML
@@ -61,6 +66,20 @@ public class libmain_control implements Initializable {
 
     //-----------------------------------------------------------
     //borrow hub
+    public void check_out(){
+        try {
+            Stage chout=new Stage();
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("borr/borrow_ui.fxml"));
+            Parent root=loader.load();
+            borrow_control borcon = loader.getController();
+            borcon.setneeds(renum.getText(),empid,bbs);
+            Scene ss=new Scene(root);
+            chout.setScene(ss);
+            chout.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public Button activate_qr,deactiv_qr;
     Thread qr_thread;
     qr_handel cam;
@@ -163,9 +182,6 @@ public class libmain_control implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
-    //-----------------------------------------------------------
-    //basket hub
 
     //-----------------------------------------------------------
 

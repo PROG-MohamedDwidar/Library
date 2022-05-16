@@ -1,8 +1,11 @@
 package admin;
 
 import java.awt.image.BufferedImage;
+
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.Calendar;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import liblib.libmain_control;
-
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
@@ -166,6 +168,28 @@ public abstract class db_book_connect {
 		if(av>0)return true;
 		return false;
 	}
+	public static boolean borrow_trans(String eid, String rid, String isbn, LocalDate da) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet isborrowed=ss.executeQuery("select * from borrow where readerid='"+rid+"' and ISBN="+isbn+" and bdate='"+Date.valueOf(da)+"'");
+		if(isborrowed.next()) {
+			c.close();
+			return false;
+		}
+		else{
+			Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			PreparedStatement ps=c.prepareStatement("INSERT INTO borrow VALUES(?,?,?,?,?);");
+			ps.setInt(1,Integer.parseInt(isbn));
+			ps.setDate(2,date);
+			ps.setNString(3,rid);
+			ps.setInt(4,Integer.parseInt(eid));
+			ps.setDate(5,Date.valueOf(da));
+			ps.execute();
+			c.close();
+			return true;
+		}
+	}
+
 }
 
 

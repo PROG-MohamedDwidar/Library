@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import liblib.libmain_control;
 
 public class logincontrol {
 	@FXML
@@ -42,7 +43,10 @@ public class logincontrol {
 			
 		}
 		else if(serverresponse.equals("2")) {
-			Parent root = FXMLLoader.load(getClass().getResource("/liblib/libmain.fxml"));
+			FXMLLoader loader=new FXMLLoader(getClass().getResource("/liblib/libmain.fxml"));
+			Parent root = loader.load();
+			libmain_control controller=loader.getController();
+			controller.setEmpid(db_login_connect.getid(id.getText()));
 			Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 			Scene scene=new Scene(root);
 			stage.setScene(scene);
