@@ -51,31 +51,38 @@ public class borrow_control {
     public void execute_transaction() throws SQLException {
         //go through shopping list
         for(borRec rec:shoplist){
-            LocalDate da;
-            //if he didn't choose a specific return date
-            if(rec.rdatp.getValue()==null){
-                //check the general return date field
-                if(gen_dat.getValue()!=null){
-                    //take the general date
-                    da=gen_dat.getValue();
+            if(!db_book_connect.didborbef(rec.isbn,rec.rid)) {
+                LocalDate da;
+                //if he didn't choose a specific return date
+                if (rec.rdatp.getValue() == null) {
+                    //check the general return date field
+                    if (gen_dat.getValue() != null) {
+                        //take the general date
+                        da = gen_dat.getValue();
+                    }
+                    //else no date is picked then ask the user to pick one
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("no date picked");
+                        alert.showAndWait();
+                        //********cancel execute*********//
+                        //proceeding without cancelling will result in an error
+                        return;
+                        //*******************************//
+                    }
                 }
-                //else no date is picked then ask the user to pick one
-                else{
-                    Alert alert=new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("no date picked");
-                    alert.showAndWait();
-                    //********cancel execute*********//
-                    //proceeding without cancelling will result in an error
-                    return;
-                    //*******************************//
+                //if he did choose a specific date
+                else {
+                    da = rec.rdatp.getValue();
                 }
+                //send the details to the database connect class to be stored in the database
+                db_book_connect.borrow_trans(rec.eid, rec.rid, rec.isbn, da);
             }
-            //if he did choose a specific date
             else{
-                da=rec.rdatp.getValue();
+                Alert alert=new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("error already borrowed please cancel and remove borrowed books");
+                alert.showAndWait();
             }
-            //send the details to the database connect class to be stored in the database
-            db_book_connect.borrow_trans(rec.eid,rec.rid,rec.isbn,da);
         }
     }
 

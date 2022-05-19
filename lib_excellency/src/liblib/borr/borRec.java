@@ -9,7 +9,6 @@ import java.time.LocalDate;
 public class borRec {
     public DatePicker rdatp;
     public String isbn,rid,eid,name,author;
-
     public borRec(book b,String rid,String eid) {
         this.isbn=b.getIsbn();
         this.name=b.getNam();
@@ -17,10 +16,7 @@ public class borRec {
         this.rid=rid;
         this.eid=eid;
         rdatp=new DatePicker();
-
-
     }
-
     public DatePicker getRdatp() {return rdatp;}
     public String getIsbn() {return isbn;}
     public String getRid() {return rid;}

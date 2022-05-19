@@ -25,11 +25,11 @@
             <TableColumn fx:id="bba" prefWidth="80.00003662109373" text="Add" />
         </columns>
       </TableView>
-      <TableView layoutX="497.0" layoutY="296.0" prefHeight="385.0" prefWidth="310.0">
+      <TableView fx:id="returntable" layoutX="497.0" layoutY="296.0" prefHeight="385.0" prefWidth="310.0">
         <columns>
-          <TableColumn prefWidth="132.0" text="Name" />
-          <TableColumn prefWidth="109.5999755859375" text="Author" />
-            <TableColumn prefWidth="68.800048828125" text="return" />
+          <TableColumn fx:id="returnname" prefWidth="132.0" text="Name" />
+          <TableColumn fx:id="author" prefWidth="109.5999755859375" text="Author" />
+            <TableColumn fx:id="returnButton" prefWidth="68.800048828125" text="return" />
         </columns>
       </TableView>
       <TextField fx:id="sebox" layoutX="14.0" layoutY="234.0" prefHeight="26.0" prefWidth="257.0" />
@@ -45,6 +45,6 @@
       <Button fx:id="activate_qr" layoutX="497.0" layoutY="206.0" mnemonicParsing="false" onAction="#act_qr" prefHeight="26.0" prefWidth="89.0" text="Activate QR" />
       <Button fx:id="deactiv_qr" layoutX="590.0" layoutY="206.0" mnemonicParsing="false" onAction="#kill_cam" prefHeight="26.0" prefWidth="125.0" text="Deactivate QR" />
       <Button layoutX="498.0" layoutY="235.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="310.0" style="-fx-background-color: FF6666;" text="Log out" />
-      <Button layoutX="498.0" layoutY="267.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="310.0" style="-fx-background-color: #99ccff;" text="Return all" />
+      <Button layoutX="498.0" layoutY="267.0" mnemonicParsing="false" onAction="#retAll" prefHeight="26.0" prefWidth="310.0" style="-fx-background-color: #99ccff;" text="Return all" />
    </children>
 </AnchorPane>

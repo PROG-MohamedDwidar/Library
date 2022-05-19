@@ -77,6 +77,22 @@ public abstract class db_book_connect {
 		
 		return oo;
 	}
+
+	static public ObservableList<book>filltreturn(ResultSet insert,String rednum){
+		//the method body is the same except that it calls a different book constructor
+		ObservableList<book>oo=FXCollections.observableArrayList();
+		try {
+			while(insert.next()) {
+				//System.out.println(insert.getString(1));
+				oo.add(new book(insert.getString(1),insert.getString(2),insert.getString(3),insert.getDate(4),rednum));
+			}
+		} catch (SQLException e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return oo;
+	}
 	//the getall method is used only for the admin
 	//when the admin interface is opened getAll is called to display all books
 	public static ObservableList<book> getAll() throws SQLException {
@@ -197,14 +213,19 @@ public abstract class db_book_connect {
 	public static boolean borrow_trans(String eid, String rid, String isbn, LocalDate da) throws SQLException {
 		Connection c=DriverManager.getConnection(url,n,pass);
 		Statement ss=c.createStatement();
-		//TODO complete add 1 to book taken
-		//ResultSet inc=ss.executeQuery("select taken from book");
+
+		ResultSet inc=ss.executeQuery("select taken from books where isbn="+isbn);
+		inc.next();
+		int tak=inc.getInt(1);
+		tak++;
+		ss.execute("UPDATE books SET taken ="+tak+" WHERE `ISBN` ="+isbn+";");
 		ResultSet isborrowed=ss.executeQuery("select * from borrow where readerid='"+rid+"' and ISBN="+isbn+" and bdate='"+Date.valueOf(da)+"'");
 		if(isborrowed.next()) {
 			c.close();
 			return false;
 		}
 		else{
+			//gets system date and puts it in a date datatype to be sent as the borrow date
 			Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			PreparedStatement ps=c.prepareStatement("INSERT INTO borrow VALUES(?,?,?,?,?);");
 			ps.setInt(1,Integer.parseInt(isbn));
@@ -216,6 +237,26 @@ public abstract class db_book_connect {
 			c.close();
 			return true;
 		}
+	}
+	public static boolean didborbef(String isbn,String rednum) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet response=ss.executeQuery("select ISBN from borrow where ISBN="+isbn+" and readerid='"+rednum+"';");
+		if(response.next()){
+			c.close();
+			return true;
+		}
+		c.close();
+		return false;
+
+	}
+	public static ObservableList<book> getReturnList(String rednum) throws SQLException {
+		Connection c=DriverManager.getConnection(url,n,pass);
+		Statement ss=c.createStatement();
+		ResultSet ans=ss.executeQuery("select books.isbn,books.bname,books.author,borrow.rdate from books,borrow where books.isbn=borrow.isbn and borrow.readerid="+rednum+";");
+		ObservableList<book> oo=filltreturn(ans,rednum);
+		c.close();
+		return oo;
 	}
 
 }

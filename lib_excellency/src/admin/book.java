@@ -12,9 +12,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import liblib.libmain_control;
+import liblib.retrun.return_control;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+
 
 public class book {
 	//all attributes required by all classes are declared
@@ -22,13 +31,45 @@ public class book {
 	private String isbn="N/A",totq="N/A",tak="N/A";
 	private String nam="N/A",cat="N/A",auth="N/A";
 	private Image cov;
-	private Button bb,bba,bbv,but_rem;
-
+	private Button bb,bba,bbv,but_rem,retbok;
+	private Date return_date;
 	private TextField i,n,c,a;
+
+	long fine,lateness;
 	private ImageView co;
 	//we need an object of the controller to access methods in it
 	private libmain_control controller;
+	book(String isbn,String nam,String auth,Date rdat,String rednum){
+		this.isbn=isbn;
+		this.nam=nam;
+		this.auth=auth;
+		LocalDate rld=rdat.toLocalDate();
+		LocalDate nowdate =(new java.sql.Date(Calendar.getInstance().getTime().getTime())).toLocalDate();
+		if(nowdate.isAfter(rld)){
+			lateness= ChronoUnit.DAYS.between(rld,nowdate);
+			fine=lateness*10;
+		}
+		else{
+			lateness=fine=0;
+		}
+		retbok=new Button("return");
+		retbok.setOnAction(e->{
+			try {
+				FXMLLoader loader=new FXMLLoader(getClass().getResource("/liblib/retrun/return_ui.fxml"));
+				Parent root=loader.load();
+				return_control controller = loader.getController();
+				controller.addbook(this,rednum);
+				Scene ret=new Scene(root);
+				Stage st=new Stage();
+				st.setScene(ret);
+				st.show();
 
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+
+		});
+	}
 	//this  constructor is used for book objects declared in basket
 	book(String isbn, String nam, String cat, String auth, String totq, String tak, Image cov,libmain_control controller){
 		this.isbn=isbn;
@@ -231,4 +272,7 @@ public class book {
 	public Button getBba() {return bba;}
 	public Button getBbv() {return bbv;}
 	public Button getBut_rem() {return but_rem;}
+	public Button getRetbok() {return retbok;}
+	public long getFine() {return fine;}
+	public long getLateness() {return lateness;}
 }

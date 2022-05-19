@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import liblib.QR.qr_handel;
 import liblib.add_reader.addred_control;
 import liblib.borr.borrow_control;
+import liblib.retrun.return_control;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -45,6 +47,17 @@ public class libmain_control implements Initializable {
             basket_tabl.setItems(bbs);
             bees.setItems(search_res);
 
+            //setting the return table
+            returnname.setCellValueFactory(new PropertyValueFactory<>("nam"));
+            author.setCellValueFactory(new PropertyValueFactory<>("auth"));
+            returnButton.setCellValueFactory(new PropertyValueFactory<>("retbok"));
+            try {
+                returntable.setItems(db_book_connect.getReturnList(renum.getText()));
+            } catch (SQLException e) {
+                Alert alert=new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("check connection");
+                alert.showAndWait();
+            }
 
 
         }
@@ -63,6 +76,30 @@ public class libmain_control implements Initializable {
     }
     //-----------------------------------------------------------
     //return hub
+    @FXML
+    TableView<book> returntable;
+    @FXML
+    TableColumn<book,String>returnname;
+    @FXML
+    TableColumn<book, String>author;
+    @FXML
+    TableColumn<book, Button>returnButton;
+
+    public void retAll(){
+        try {
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/liblib/retrun/return_ui.fxml"));
+            Parent root=loader.load();
+            return_control controller = loader.getController();
+            controller.addbook(returntable.getItems(),renum.getText());
+            Scene ret=new Scene(root);
+            Stage st=new Stage();
+            st.setScene(ret);
+            st.show();
+
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     //-----------------------------------------------------------
     //borrow hub
