@@ -79,6 +79,15 @@ public class admincontrol implements Initializable  {
 		ss.show();
 		
 	}
+	//add employee opens another stage to add the book to database separately
+	public void addemp(ActionEvent e) throws Exception{
+		Parent mt=FXMLLoader.load(getClass().getResource("addemp.fxml"));
+		Stage s=new Stage();
+		Scene cc=new Scene(mt);
+		s.setScene(cc);
+		s.show();
+
+	}
 	
 	
 	

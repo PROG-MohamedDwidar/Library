@@ -55,6 +55,8 @@ public class editBcontrol {
     public void save() throws SQLException, IOException {
 
         db_book_connect.upbook(isbn.getText(),quant.getText(),im.getImage());
+        Stage ss=(Stage)st.getScene().getWindow();
+        ss.close();
     }
     public void chan() throws FileNotFoundException {
         FileChooser dd=new FileChooser();

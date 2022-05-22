@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +22,13 @@ public class logincontrol {
 	@FXML
 	TextField id;
 	@FXML
-	TextField pass;
+	PasswordField pass;
+	@FXML
+	private Label nameid;
+
+	@FXML
+	private Label pass2;
+
 	@FXML
 	Label outname;//shows only if username is wrong
 	@FXML
