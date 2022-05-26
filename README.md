@@ -1,1 +1,1 @@
-# Tomorrow discussion, wish us luck :D!
+# Today is discussion, wish us luck :D!
