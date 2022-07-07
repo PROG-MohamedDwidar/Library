@@ -10,7 +10,7 @@ public class Emp {
 	public String pnum;
 
 	private Image fp;
-
+	Emp(){}
 	Emp(String id,String name,String job,String email,String pnum){
 		this.id=id;
 		this.name=name;

@@ -76,7 +76,7 @@ public class addempcontrol {
         }
     }
 
-    public void Close(ActionEvent event) {
+    /*public void Close(ActionEvent event) {
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close window");
@@ -84,6 +84,6 @@ public class addempcontrol {
         alert.setContentText("Do you want to close the window");
         alert.showAndWait();
         stage.close();
-    }
+    }*/
 }
 

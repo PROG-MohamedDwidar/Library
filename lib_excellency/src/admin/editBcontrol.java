@@ -37,6 +37,7 @@ public class editBcontrol {
     ImageView im;
 
 
+    //not automatically called
     public void initialize(String isbnn) {
         isbnsearch=isbnn;
         try {
@@ -58,6 +59,7 @@ public class editBcontrol {
         Stage ss=(Stage)st.getScene().getWindow();
         ss.close();
     }
+    //chan method opens a file chooser to get the directory of the new image
     public void chan() throws FileNotFoundException {
         FileChooser dd=new FileChooser();
         File mam=dd.showOpenDialog(new Stage());

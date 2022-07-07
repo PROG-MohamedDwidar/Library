@@ -39,13 +39,18 @@ public class book {
 	private ImageView co;
 	//we need an object of the controller to access methods in it
 	private libmain_control controller;
+	//constructor for return
+	/**reader number "rednum" is not an attribute but it needs to be passed to a controller**/
 	book(String isbn,String nam,String auth,Date rdat,String rednum){
 		this.isbn=isbn;
 		this.nam=nam;
 		this.auth=auth;
+		//date we got is sql.date we need to covert it to lacal date to be able to make operations on dates
 		LocalDate rld=rdat.toLocalDate();
+		//gets system date
 		LocalDate nowdate =(new java.sql.Date(Calendar.getInstance().getTime().getTime())).toLocalDate();
 		if(nowdate.isAfter(rld)){
+			//count days between now and "supposedly"
 			lateness= ChronoUnit.DAYS.between(rld,nowdate);
 			fine=lateness*10;
 		}
@@ -192,6 +197,7 @@ public class book {
 
 							controller.bbs.add(this);
 							controller.basket_refresh();
+							//TODO check if this assign statment is useful
 							flag=1;
 						}
 						//else show error
@@ -203,7 +209,10 @@ public class book {
 					}
 				} catch (SQLException ex) {
 					//Execption here means connection problems
-					//TODO make alert
+
+					Alert alert=new Alert(Alert.AlertType.ERROR);
+					alert.setContentText("check connection");
+					alert.showAndWait();
 					throw new RuntimeException(ex);
 				}
 

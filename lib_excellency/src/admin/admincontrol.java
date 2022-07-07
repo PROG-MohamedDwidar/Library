@@ -100,7 +100,7 @@ public class admincontrol implements Initializable  {
 		try {
 			//getAll adds all employees to an observable list and returns the ObservableList
 			tabl.setItems(db_user_connect.getAll());
-		} catch (SQLException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 	}

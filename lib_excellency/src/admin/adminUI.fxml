@@ -17,11 +17,11 @@
                             <TableColumn fx:id="name" prefWidth="188.79998779296875" text="Name" />
                               <TableColumn fx:id="job" prefWidth="83.20001220703125" text="Job" />
                               <TableColumn fx:id="email" prefWidth="241.5999755859375" text="Email" />
-                              <TableColumn fx:id="phone" prefWidth="161.60003662109375" text="phone number" />
+                              <TableColumn fx:id="phone" prefWidth="197.60002441406255" text="phone number" />
                           </columns>
                         </TableView>
-                        <Button layoutX="21.0" layoutY="76.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="58.0" style="-fx-background-color: #528C5B #528C5B;" text="add" textAlignment="CENTER" textFill="#efebeb" />
-                        <Button layoutX="109.0" layoutY="76.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="58.0" text="refresh" textFill="#151515" />
+                        <Button fx:id="addemp" layoutX="21.0" layoutY="76.0" mnemonicParsing="false" onAction="#addemp" prefHeight="30.0" prefWidth="58.0" style="-fx-background-color: #528C5B #528C5B;" text="add" textAlignment="CENTER" textFill="#efebeb" />
+                        <Button layoutX="109.0" layoutY="76.0" mnemonicParsing="false" onAction="#refresh" prefHeight="30.0" prefWidth="58.0" text="refresh" textFill="#151515" />
                         <TextField layoutX="200.0" layoutY="79.0" prefHeight="26.0" prefWidth="299.0" style="-fx-border-color: #528C5B;" />
                         <Button layoutX="502.0" layoutY="77.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="58.0" text="Search" textFill="#131212" />
                      </children>

@@ -87,7 +87,6 @@ public abstract class db_book_connect {
 				oo.add(new book(insert.getString(1),insert.getString(2),insert.getString(3),insert.getDate(4),rednum));
 			}
 		} catch (SQLException e) {
-			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -154,7 +153,7 @@ public abstract class db_book_connect {
 		return oo;
 	}
 
-	//TODO find what getBook does
+	//takes isbn and returns details from database
 	public static book getBook(String isbn) throws SQLException {
 		Connection c=DriverManager.getConnection(url,n,pass);
 		Statement ss=c.createStatement();
@@ -164,6 +163,8 @@ public abstract class db_book_connect {
 		book ret=new book(ans.getString(1),ans.getString(2),ans.getString(3),ans.getString(4),ans.getString(5),ans.getString(6),im);
 		return ret;
 	}
+
+	/**takes controller because it needs to create a book that has remove button that edits basket inside controller**/
 	public static book getBook(String isbn,libmain_control controller) throws SQLException {
 		Connection c=DriverManager.getConnection(url,n,pass);
 		Statement ss=c.createStatement();
@@ -176,8 +177,11 @@ public abstract class db_book_connect {
 	//upbook takes information entered by the admin and sent by the admin controller
 	//then it updates these information for that certain book with the same isbn
 	public static void upbook(String isb, String quant, Image im) throws SQLException, IOException {
+		//creates new file
 		File fileim=new File("imbuf");
+		//writes imge to file
 		ImageIO.write(SwingFXUtils.fromFXImage(im,null),"png",fileim);
+
 		FileInputStream fin=new FileInputStream(fileim);
 		Connection c=DriverManager.getConnection(url,n,pass);
 		PreparedStatement ss=c.prepareStatement("UPDATE `proj`.`books` SET `TotQT` = ? , cover = ? WHERE `ISBN` = ? ;");
@@ -213,12 +217,17 @@ public abstract class db_book_connect {
 	public static boolean borrow_trans(String eid, String rid, String isbn, LocalDate da) throws SQLException {
 		Connection c=DriverManager.getConnection(url,n,pass);
 		Statement ss=c.createStatement();
-
+		//increments taken value in database by one
+		//one: get the number rom db
 		ResultSet inc=ss.executeQuery("select taken from books where isbn="+isbn);
 		inc.next();
+		//two: convert it to integer then add one
 		int tak=inc.getInt(1);
 		tak++;
+		//three update the database
 		ss.execute("UPDATE books SET taken ="+tak+" WHERE `ISBN` ="+isbn+";");
+		//checks if borrowed
+		//TODO check if useful
 		ResultSet isborrowed=ss.executeQuery("select * from borrow where readerid='"+rid+"' and ISBN="+isbn+" and bdate='"+Date.valueOf(da)+"'");
 		if(isborrowed.next()) {
 			c.close();
@@ -250,6 +259,7 @@ public abstract class db_book_connect {
 		return false;
 
 	}
+	/**gets the currently borrowed books by a reader**/
 	public static ObservableList<book> getReturnList(String rednum) throws SQLException {
 		Connection c=DriverManager.getConnection(url,n,pass);
 		Statement ss=c.createStatement();
@@ -257,6 +267,22 @@ public abstract class db_book_connect {
 		ObservableList<book> oo=filltreturn(ans,rednum);
 		c.close();
 		return oo;
+	}
+
+	public static void returner(String rednum,String isbn){
+		try {
+			Connection c = DriverManager.getConnection(url, n, pass);
+			PreparedStatement ps = c.prepareStatement("DELETE FROM `proj`.`borrow` WHERE readerid = ? and isbn = ?;");
+			ps.setNString(1,rednum);
+			int is=Integer.parseInt(isbn);
+			ps.setInt(2,is);
+			ps.execute();
+			c.close();
+			return;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }

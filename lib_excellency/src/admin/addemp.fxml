@@ -16,12 +16,7 @@
                                 <TextField fx:id="address" layoutX="10.0" layoutY="314.0" prefHeight="34.0" prefWidth="387.0" promptText="Address" style="-fx-border-color: #989E8B;" />
                                 <TextField fx:id="email" layoutX="11.0" layoutY="258.0" prefHeight="34.0" prefWidth="387.0" promptText="Email" style="-fx-border-color: #989E8B;" />
                                 <VBox layoutY="322.0" />
-                                <Button fx:id="save" layoutX="70.0" layoutY="394.0" mnemonicParsing="false" onAction="#AddMember" opacity="0.88" prefHeight="51.0" prefWidth="92.0" style="-fx-background-color: #528C5B;" text="Save" textFill="#f4f0f0">
-                                    <font>
-                                        <Font size="24.0" />
-                                    </font>
-                                </Button>
-                                <Button fx:id="close" layoutX="228.0" layoutY="394.0" mnemonicParsing="false" onAction="#Close" opacity="0.88" prefHeight="51.0" prefWidth="92.0" style="-fx-background-color: #e11f18;" text="Close" textFill="#f2eeee">
+                                <Button fx:id="addemp" layoutX="148.0" layoutY="377.0" mnemonicParsing="false" onAction="#AddMember" opacity="0.88" prefHeight="34.0" prefWidth="92.0" style="-fx-background-color: #528C5B;" text="Add" textFill="#f4f0f0">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
