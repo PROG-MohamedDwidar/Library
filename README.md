@@ -8,6 +8,9 @@
  -contribution on github doesn't reflect how developers distributed tasks among themselves  
  -the azure server will be closed due to cost related issues we will not provide a replacement and the code will net be runnable  
  -the server package inside the src file is an independent program and it has to be run first  
+   
+-A recording of the running project is uploaded as "Recording #1.mp4" but it is not the final version and it still has some errors
+-all the errors were fixed and all functionalities were added but not updated in the video 
   
 #We made it :D!   
 Feel free to browse through the code, it has QR feature to search for books found in the database.  
