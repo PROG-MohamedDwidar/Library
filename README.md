@@ -6,7 +6,7 @@
   
 #Attention:  
  -contribution on github doesn't reflect how developers distributed tasks among themselves  
- -the azure server will be closed due to cost related issues we will not provide a replacement and the code will net be runnable  
+ -the azure server will be closed due to cost related issues we will not provide a replacement and the code will not be runnable anymore  
  -the server package inside the src file is an independent program and it has to be run first  
    
 -A recording of the running project is uploaded as "Recording #1.mp4" but it is not the final version and it still has some errors  
